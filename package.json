@@ -4,12 +4,18 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "dev:tsc": "tsc -w",
+    "dev":"tsc&&node build/app.js",
+    "prd": ""
   },
   "author": "",
   "license": "ISC",
   "dependencies": {
-    "koa2": "^2.0.0-alpha.7",
+    "koa": "^2.14.1",
     "nodemon": "^2.0.20"
+  },
+  "devDependencies": {
+    "@types/koa": "^2.13.5"
   }
 }
