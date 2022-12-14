@@ -9,6 +9,7 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "koa2": "^2.0.0-alpha.7",
     "nodemon": "^2.0.20"
   }
 }
