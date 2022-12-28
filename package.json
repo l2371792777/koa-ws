@@ -5,17 +5,19 @@
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "dev:tsc": "tsc -w",
-    "dev":"tsc&&node build/app.js",
+    "dev": "tsc&&node build/app.js",
     "prd": ""
   },
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "axios": "^1.2.1",
     "koa": "^2.14.1",
+    "koa-router": "^12.0.0",
     "nodemon": "^2.0.20"
   },
   "devDependencies": {
-    "@types/koa": "^2.13.5"
+    "@types/koa": "^2.13.5",
+    "@types/koa-router": "^7.4.4"
   }
 }
