@@ -4,12 +4,12 @@
 
 
 import Koa from 'koa';
-import Router from 'koa-router';
+import testApiRouter from "./routes/api/test";
 
 let app=new Koa();
-let router=new Router();
 
-app.use(router.routes());
+app.use(testApiRouter.routes());
+
 
 app.listen(3030);
-console.log("OK");
+console.log("listen in 3030");
