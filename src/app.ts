@@ -3,11 +3,16 @@
  */
 
 import Koa from 'koa';
-import init from './core/init';
+import koaBody from 'koa-body';
+import initManager from './core/init';
+import catchError from './middlewares/exception'
 
 const app = new Koa();
 
-init.initroute(app);
+app.use(koaBody());
+app.use(catchError);
+
+initManager.initCore(app);
 
 app.listen(3030);
 console.log("listen in 3030");

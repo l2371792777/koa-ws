@@ -1,6 +1,6 @@
 import Router from 'koa-router';
 
-let router = new Router();
+const router = new Router();
 
 router.prefix('/api');
 router.get("/list", (ctx: any, next: any) => {
@@ -9,4 +9,5 @@ router.get("/list", (ctx: any, next: any) => {
     };
 });
 
+// export = {router:router};
 export = router;

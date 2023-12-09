@@ -1,48 +1,60 @@
-import * as fs from 'fs';
+import fileManager from './file';
 import * as path from 'path';
 import Router from 'koa-router';
+import * as ResModel from './model/ResModel';
+import * as ErrorInfo from './model/ErrorInfo';
 
-class init {
+class initManager {
   private static app: any;
   constructor() {
   };
 
-  static initroute(app: any): void {
-    init.app = app;
-    const routerDirectory = `${process.cwd()}/src/routes`;
-    init.readDirectoryRecursive(routerDirectory);
+  static initCore(app: any): void {
+    initManager.initLoadRouters(app, path.join(__dirname, `../app/api`));
+    initManager.loadModel();
   }
 
-  static modulebind(file: string, filePath: string): void {
+  /**
+  * @parameter routerDirectory string 文件路径 
+  */
+  static initLoadRouters(app: any, routerDirectory: string): void {
+    initManager.app = app;
+    let filePaths: Record<string, any> = fileManager.readDirectory(routerDirectory);
+    initManager.loadRouter(filePaths);
+  }
+  /** 绑定路由模块
+   *  
+   */
+  static loadRouter(filePaths: Record<string, any>): void {
     const modules: Record<string, any> = {};
-    if (file.endsWith('.ts')) {
-      const moduleName = path.basename(file, '.ts');
-      modules[moduleName] = require(filePath);
-      if (modules[moduleName] instanceof Router) {
-        init.app.use(modules[moduleName].routes());
-      }
-    }
-  }
-  static readDirectoryRecursive(directoryPath: string): void {
-    const files = fs.readdirSync(directoryPath);
+    //遍历文件
+    Object.keys(filePaths).forEach(file => {
+      if (file.endsWith('.ts')) {
+        const moduleName = path.basename(file, '.ts');
+        modules[moduleName] = require(filePaths[file]);
 
-    files.forEach((file) => {
-      const filePath = path.join(directoryPath, file);
-      const stats = fs.statSync(filePath);
-
-      if (stats.isFile()) {
-        console.log('File:', filePath);
-        // 在这里执行文件的操作
-        init.modulebind(file, filePath);
-      } else if (stats.isDirectory()) {
-        console.log('Directory:', filePath);
-        // 在这里执行目录的操作
-        init.readDirectoryRecursive(filePath); // 递归调用，读取子目录
+        if (modules[moduleName] instanceof Router) {
+          initManager.app.use(modules[moduleName].routes());
+        }
+        else {
+          Object.keys(modules[moduleName]).forEach(key => {
+            if (modules[moduleName][key] instanceof Router) {
+              initManager.app.use(modules[moduleName][key].routes());
+            }
+          });
+        }
       }
     });
+  }
+  /** 加载错误信息，数据模型为全局变量
+   * 
+   */
+  static loadModel() {
+    global.ResModel = ResModel;
+    global.ErrorInfo = ErrorInfo;
   }
 }
 
 
-export = init;
+export = initManager;
 
