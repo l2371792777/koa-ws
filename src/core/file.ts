@@ -35,4 +35,4 @@ class fileManage {
     }
 }
 
-export = fileManage;
+export default fileManage;

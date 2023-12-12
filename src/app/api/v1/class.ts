@@ -1,16 +1,18 @@
 import Router from 'koa-router';
+import Joi from 'joi';
+import { PositiveIntegerValidator } from '../../validators/validator';
 
 const router = new Router();
 
 router.prefix('/api');
 router.get("/v1/:id/classic/lastest", (ctx: any, next: any) => {
     const path = ctx.params;
+    let res: Joi.ValidationResult<any> = new PositiveIntegerValidator().validator(ctx);
     ctx.body = {
-        mes: `${ctx.request.method} ${ctx.request.url}`
+        ctx: res
     };
-    
-    throw new global.ResModel.ErrorModel(global.ErrorInfo.registerFailInfo,{'url':`${ctx.request.method} ${ctx.request.url}`,'ctx':ctx.response.status});
+
 });
 
 // export = {router:router};
-export = router;
+export default router;

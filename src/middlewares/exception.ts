@@ -1,20 +1,34 @@
-import { ErrorModel } from "../core/model/ResModel";
+import * as config from "../config/config";
 
+// using namespace MyModel;
+/**
+     * Catches any errors that occur during the execution of the next middleware function and handles them accordingly.
+     * 
+     * @param {any} ctx - The context object that represents the state and request information of the application.
+     * @param {any} next - The next middleware function in the application's request-response cycle.
+     * @returns {Promise<any>} - A promise that resolves when the error handling is complete.
+     */
 async function catchError(ctx: any, next: any): Promise<any> {
     try {
         await next();
     }
     catch (error) {
-        if (error instanceof ErrorModel) {
+        const isDev=config.environment === 'dev';
+        const isErrorModel=error instanceof global.ResModel.ErrorModel;
+        if (isDev && !isErrorModel) {
+            throw error;
+        }
+        if (isErrorModel) {
             ctx.body = {
                 'mes': error
             };
-            console.log(error.message);
         }
-        else{
-            console.log(error);
+        else {
+            ctx.body = {
+                'mes': "error"
+            }
         }
     }
 }
 
-export = catchError;
+export default catchError;

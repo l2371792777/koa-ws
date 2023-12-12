@@ -1,9 +1,8 @@
 import fileManager from './file';
 import * as path from 'path';
 import Router from 'koa-router';
-import * as ResModel from './model/ResModel';
-import * as ErrorInfo from './model/ErrorInfo';
-
+import * as ErrorInfo from './ErrorInfo';
+import * as ResModel from "./ResModel";
 class initManager {
   private static app: any;
   constructor() {
@@ -11,7 +10,7 @@ class initManager {
 
   static initCore(app: any): void {
     initManager.initLoadRouters(app, path.join(__dirname, `../app/api`));
-    initManager.loadModel();
+    this.loadGlobalVariable();
   }
 
   /**
@@ -46,15 +45,12 @@ class initManager {
       }
     });
   }
-  /** 加载错误信息，数据模型为全局变量
-   * 
-   */
-  static loadModel() {
-    global.ResModel = ResModel;
-    global.ErrorInfo = ErrorInfo;
+  static loadGlobalVariable(){
+    global.ResModel=ResModel;
+    global.ErrorInfo=ErrorInfo;
   }
 }
 
 
-export = initManager;
+export default initManager;
 
