@@ -1,5 +1,5 @@
 import { Sequelize, DataTypes } from "sequelize";
-import sequelize from "../../core/db";
+import sequelize from "../core/db";
 
 const User = sequelize.define('User', {
     email: {
@@ -15,18 +15,22 @@ const User = sequelize.define('User', {
         allowNull: false,
         validate: {
             len: {
-                args: [6, 20],
+                args: [6, Infinity],
                 msg:'Password must be at least 6 characters long'
             }
         }
     },
     openid: {
         type: DataTypes.STRING,
-        allowNull: false,
+        allowNull: true,
         unique: true
     },
     nickname: {
         type: DataTypes.STRING,
         allowNull: false
     }
-})
+});
+
+export {
+    User
+};

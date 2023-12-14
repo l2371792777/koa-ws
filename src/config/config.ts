@@ -7,8 +7,13 @@ const database = {
     user: 'root',
     password: 'ayanami'
 }
+const security = {
+    securityKey: "as_QE@NJ*1",
+    expiresIn: 60 * 60 * 24 * 7
+}
 
 export {
     environment,
-    database
+    database,
+    security
 };

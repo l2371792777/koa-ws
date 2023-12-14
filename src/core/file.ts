@@ -6,8 +6,11 @@ class fileManage {
     constructor() {
     }
 
-    /* 遍历指定目录下所有文件
-    */
+    /**
+     * 递归遍历目录
+     * @param directoryPath 
+     * @param filePaths 
+     */
     private static directoryRecursive(directoryPath: string,filePaths: Record<string, any>): void {
         const files = fs.readdirSync(directoryPath);
 
@@ -26,8 +29,11 @@ class fileManage {
             }
         });
     }
-    /* 遍历目录
-    */
+    /**
+     * 
+     * @param directoryPath 遍历目录
+     * @returns 
+     */
     static readDirectory(directoryPath: string):Record<string, any>{
         let filePaths: Record<string, any> = {};
         fileManage.directoryRecursive(directoryPath,filePaths);

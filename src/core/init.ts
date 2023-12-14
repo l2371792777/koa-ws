@@ -4,41 +4,35 @@ import Router from 'koa-router';
 import * as ErrorInfo from './ErrorInfo';
 import * as ResModel from "./ResModel";
 class initManager {
-  private static app: any;
   constructor() {
   };
 
   static initCore(app: any): void {
-    initManager.initLoadRouters(app, path.join(__dirname, `../app/api`));
+    initManager.loadRouter(app, path.join(__dirname, `../app/api`));
     this.loadGlobalVariable();
   }
 
   /**
-  * @parameter routerDirectory string 文件路径 
-  */
-  static initLoadRouters(app: any, routerDirectory: string): void {
-    initManager.app = app;
-    let filePaths: Record<string, any> = fileManager.readDirectory(routerDirectory);
-    initManager.loadRouter(filePaths);
-  }
-  /** 绑定路由模块
-   *  
+   * 绑定路由
+   * @param app 
+   * @param routerDirectory 
    */
-  static loadRouter(filePaths: Record<string, any>): void {
+  static loadRouter(app: any, routerDirectory: string): void {
     const modules: Record<string, any> = {};
-    //遍历文件
+    let filePaths: Record<string, any> = fileManager.readDirectory(routerDirectory);
+    
     Object.keys(filePaths).forEach(file => {
       if (file.endsWith('.ts')) {
         const moduleName = path.basename(file, '.ts');
         modules[moduleName] = require(filePaths[file]);
 
         if (modules[moduleName] instanceof Router) {
-          initManager.app.use(modules[moduleName].routes());
+          app.use(modules[moduleName].routes());
         }
         else {
           Object.keys(modules[moduleName]).forEach(key => {
             if (modules[moduleName][key] instanceof Router) {
-              initManager.app.use(modules[moduleName][key].routes());
+              app.use(modules[moduleName][key].routes());
             }
           });
         }

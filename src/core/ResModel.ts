@@ -1,21 +1,34 @@
 interface resInfo {
+    code?: number;
     errno: number;
     data?: any;
     message?: string;
 }
 
 class BaseModel {
+    public code: number;
     public errno: number;
     public message: string;
     public data: any;
-    constructor(res: resInfo = { errno: 0, data: "no mes" }) {
-        this.errno = res.errno;
-        if (res.data) {
-            this.data = res.data;
+    constructor(res: resInfo) {
+        this.errno = res.errno || 205;
+        this.setData(res.data);
+        this.setMessage(res.message);
+        this.setCode(res.code);
+    }
+    setData(data?: any): BaseModel {
+        this.data = data || "no date";
+        return this;
+    }
+    setMessage(message?: any): BaseModel {
+        this.message = message || "no message";
+        return this;
+    }
+    setCode(code?: number): BaseModel {
+        if (code) {
+            this.code = code;
         }
-        if (res.message) {
-            this.message = res.message;
-        }
+        return this;
     }
 }
 
@@ -23,7 +36,7 @@ class BaseModel {
  * 成功的数据模型
  */
 class SuccessModel extends BaseModel {
-    constructor(data: any) {
+    constructor(data: any = "no data") {
         super({ errno: 0, data: data })
     }
 }
@@ -35,10 +48,18 @@ class ErrorModel extends BaseModel {
     private url: string;
     constructor(res: resInfo, ctx?: any) {
         super(res);
-        this.url = `${ctx.request.method} ${ctx.request.url}`;
+        this.setCtx(ctx);
+    }
+    setCtx(ctx?: any): ErrorModel {
+        if (ctx) {
+            this.url = `${ctx.request.method} ${ctx.request.url}`;
+        }
+        return this;
     }
 }
 export {
+    resInfo,
+    BaseModel,
     SuccessModel,
     ErrorModel
 }

@@ -1,4 +1,5 @@
 import * as config from "../config/config";
+import { BaseModel } from "../core/ResModel";
 
 // using namespace MyModel;
 /**
@@ -14,18 +15,18 @@ async function catchError(ctx: any, next: any): Promise<any> {
     }
     catch (error) {
         const isDev=config.environment === 'dev';
-        const isErrorModel=error instanceof global.ResModel.ErrorModel;
-        if (isDev && !isErrorModel) {
+        const isBaseModel = error instanceof BaseModel;
+        if (isDev && !isBaseModel) {
             throw error;
         }
-        if (isErrorModel) {
+        if (isBaseModel) {
             ctx.body = {
                 'mes': error
             };
         }
         else {
             ctx.body = {
-                'mes': "error"
+                'error': error
             }
         }
     }
