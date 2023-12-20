@@ -6,7 +6,7 @@ async function create(user: any): Promise<any> {
     const result = await User.create(user);
     return result;
 }
-async function findToEmail(email: string): Promise<any> {
+async function findByEmail(email: string): Promise<any> {
     const result = await User.findOne({
         where: {
             email: email
@@ -14,22 +14,38 @@ async function findToEmail(email: string): Promise<any> {
     })
     return result;
 }
+async function findByOpenId(openid: string): Promise<any> {
+    const result = await User.findOne({
+        where: {
+            openid: openid
+        }
+    })
+    return result;
+}
+async function createByOpenId(openid: string): Promise<any> {
+    const result = await User.create({
+        openid: openid
+    });
+    return result;
+}
 
-async function verifyEmailPassword(user:any): Promise<any> {
-    const result = await findToEmail(user.account);
+async function verifyEmailPassword(user: any): Promise<any> {
+    const result = await findByEmail(user.account);
     if (!result) {
         throw new global.ResModel.ErrorModel(global.ErrorInfo.loginUserNoExistInfo);
     }
     const correct = await bcrypt.compare(user.secret, result.dataValues.password);
-    if(!correct){
+    if (!correct) {
         throw new global.ResModel.ErrorModel(global.ErrorInfo.verifyEmailPassword);
     }
-    
+
     return result;
 }
 
 export {
     create,
-    findToEmail,
-    verifyEmailPassword
+    findByEmail,
+    verifyEmailPassword,
+    createByOpenId,
+    findByOpenId
 }

@@ -11,7 +11,7 @@ class BaseModel {
     public message: string;
     public data: any;
     constructor(res: resInfo) {
-        this.errno = res.errno || 205;
+        this.errno = res.errno;
         this.setData(res.data);
         this.setMessage(res.message);
         this.setCode(res.code);

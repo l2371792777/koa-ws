@@ -4,7 +4,7 @@ import sequelize from "../core/db";
 const User = sequelize.define('User', {
     email: {
         type: DataTypes.STRING,
-        allowNull: false,
+        allowNull: true,
         unique: true,
         validate: {
             isEmail: true
@@ -12,7 +12,7 @@ const User = sequelize.define('User', {
     },
     password: {
         type: DataTypes.STRING,
-        allowNull: false,
+        allowNull: true,
         validate: {
             len: {
                 args: [6, Infinity],
@@ -27,7 +27,7 @@ const User = sequelize.define('User', {
     },
     nickname: {
         type: DataTypes.STRING,
-        allowNull: false
+        allowNull: true
     }
 });
 

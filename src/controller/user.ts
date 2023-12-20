@@ -1,11 +1,13 @@
-import { create, findToEmail, verifyEmailPassword } from '../server/user';
+import { create, findByEmail, verifyEmailPassword } from '../server/user';
 import { ErrorModel } from '../core/ResModel';
 import bcrypt from "bcryptjs";
 import { LoginType } from '../app/validators/validator';
 import { generateToken } from '../core/util';
+import Auth from '../middlewares/auth';
+import wxManager from '../server/wx';
 async function createUser(user: any): Promise<any> {
     //todo 邮箱重复验证
-    let result: any = await findToEmail(user.email);
+    let result: any = await findByEmail(user.email);
     if (result) {
         throw new ErrorModel(global.ErrorInfo.registerEmailExistInfo).setData(result);
     }
@@ -16,12 +18,15 @@ async function createUser(user: any): Promise<any> {
 }
 
 async function login(user: any): Promise<any> {
+    let result:any;
     switch (user.type) {
         case LoginType.USER_EMAIL:
-            let result = await verifyEmailPassword(user);
-            return generateToken(result.dataValues.id, 2);
+            result = await verifyEmailPassword(user);
+            return generateToken(result.dataValues.id, Auth.USER);
             break;
         case LoginType.USER_MINI_PROGRAM:
+            result=await wxManager.codeToToken(user.account);
+            return generateToken(result.dataValues.id, Auth.USER);
             break;
         case LoginType.USER_MOBILE:
             break;

@@ -5,4 +5,5 @@ promise async await
 validator  
 关系型数据库 非关系型数据库
 session token  
-权限
+权限  
+微信小程序ui

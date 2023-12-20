@@ -14,7 +14,7 @@ router.post("/register", async (ctx: any, next: any) => {
     throw new global.ResModel.SuccessModel(result);
 });
 
-router.post("/login",new Auth().verifyToken,async (ctx:any,next:any)=>{
+router.post("/login",new Auth(Auth.USER).verify,async (ctx:any,next:any)=>{
     ctx.body=ctx.auth;
 });
 

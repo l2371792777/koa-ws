@@ -1,4 +1,3 @@
-import { number } from "joi";
 import { resInfo } from "./ResModel";
 
 /**
@@ -25,7 +24,7 @@ const forbbiden: resInfo = {
     message: '禁止访问',
     code:403
 };
-const tokenVerifyInfo: resInfo = {
+const authVerifyInfo: resInfo = {
     errno: 10006,
     message: '令牌不合法',
 };
@@ -41,7 +40,7 @@ export {
     verifyPasswordInfo,
     missFunction,
     forbbiden,
-    tokenVerifyInfo
+    authVerifyInfo 
 }
 
 

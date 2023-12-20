@@ -5,8 +5,8 @@ class baseValidator {
     protected errorInfo: any;
     constructor() {
         this.errorInfo = {
-            errorno: 205,
-            message: "undefined"
+            errorno: 0,
+            message: "base validate"
         }
     }
     extractData(data: any): any {
@@ -77,11 +77,12 @@ class TokenValidator extends baseValidator {
     constructor() {
         super();
         this.schema = Joi.object({
-            account: Joi.string().email().required(),
+            account: Joi.string().required(),
             secret: Joi.string().optional().min(6),
             type: Joi.number().valid(...Object.values(LoginType)).required()
         })
         this.errorInfo = global.ErrorInfo.registerFailInfo;
+        this.errorInfo.message = "Token数据校验失败";
     }
     validator(ctx: any): Joi.ValidationResult<any> {
         let validationResult: Joi.ValidationResult<any> = this.schema.validate(this.extractData(ctx));
@@ -97,9 +98,32 @@ class TokenValidator extends baseValidator {
     }
 }
 
+class NotEmptyValidator extends baseValidator {
+    constructor() {
+        super();
+        this.schema = Joi.object({
+            token: Joi.string().required()
+        })
+        this.errorInfo = global.ErrorInfo.authVerifyInfo;
+        this.errorInfo.message = "token不为空";
+    }
+    validator(ctx: any): Joi.ValidationResult<any> {
+        let validationResult: Joi.ValidationResult<any> = this.schema.validate(this.extractData(ctx));
+        return this.errorValidator(validationResult);
+    }
+    extractData(ctx: object): object {
+        const body = ctx["request"].body;
+        return {
+            token: body.token
+        }
+    }
+
+}
+
 export {
     PositiveIntegerValidator,
     RegisterValidator,
     TokenValidator,
-    LoginType
+    LoginType,
+    NotEmptyValidator
 }
