@@ -90,6 +90,7 @@ class TokenValidator extends baseValidator {
     }
     extractData(ctx: object): object {
         const body = ctx["request"].body;
+        console.log(ctx["request"]);
         return {
             account: body.account,
             secret: body.secret,

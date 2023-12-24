@@ -4,6 +4,11 @@ import util from "util";
 import { createByOpenId, findByOpenId } from "./user";
 
 class wxManager {
+    /**
+     * 微信code生成openid
+     * @param code wx.code
+     * @returns 
+     */
     static async codeToToken(code: string): Promise<any> {
         const url: string = util.format(wx.loginUrl, wx.appId, wx.appSecret, code);
         const result = await axios.get(url);

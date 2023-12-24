@@ -12,9 +12,8 @@ router.post("/", async (ctx: any, next: any) => {
     let token: string = await login(res.value);
     throw new global.ResModel.SuccessModel({ token: token });
 });
-router.post("/verify", async (ctx: any, next: any) => {
-    let res: Joi.ValidationResult<any> = await new NotEmptyValidator().validator(ctx);
-    ctx.body = Auth.verifyToken(res.value.token);
+router.get("/verify",new Auth(Auth.USER).verify, async (ctx: any, next: any) => {
+    ctx.body = "true";
 });
 
 export default router;

@@ -1,6 +1,6 @@
 import sequelize from "../../core/db";
-require("./user");
+require("../user");
 
-sequelize.sync({ force: false }).then(() => {
+sequelize.sync({ force: true }).then(() => {
     process.exit();
 })

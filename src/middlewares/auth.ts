@@ -11,6 +11,9 @@ class Auth {
     constructor(level?: number) {
         this.level = level || 1;
     }
+    /**
+     * 验证token
+     */
     get verify() {
         return async (ctx: any, next: any): Promise<any> => {
             let decode: any;
@@ -37,6 +40,11 @@ class Auth {
             await next();
         }
     }
+    /**
+     * 验证token是否合法
+     * @param token 
+     * @returns 
+     */
     static verifyToken(token: string): boolean {
         try {
             jwt.verify(token, security.securityKey);
