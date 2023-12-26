@@ -1,6 +1,6 @@
 import { Sequelize, DataType } from "sequelize";
 import bcrypt from "bcryptjs";
-import { User } from "../models/user"
+import { User } from "../models/user";
 
 async function create(user: any): Promise<any> {
     const result = await User.create(user);

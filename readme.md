@@ -8,3 +8,4 @@ session token
 权限  
 微信小程序ui
 sequelize 
+qt network
